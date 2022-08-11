@@ -10,4 +10,4 @@ mvn liberty:stop
 
 ## endpoints
 
-http://localhost:9081/gitops-demo-inventory/inventory/systems
+http://localhost:9081/inventory/systems/{hostname}

@@ -56,6 +56,7 @@ public class InventoryResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public InventoryList listContents() {
+    // manager.add("host1","Property1");
     return manager.list();
   }
 
