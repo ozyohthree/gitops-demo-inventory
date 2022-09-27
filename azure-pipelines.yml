@@ -1,0 +1,44 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+- main
+
+pr: none
+
+resources: 
+  - repo: self
+
+variables:
+  - name: PIPELINE_NAME
+    value: $(Build.DefinitionName)
+  - name: GIT_COMMIT 
+    value: $(Build.SourceVersion)
+
+stages:
+  - stage: BuildBranch
+    displayName: Build jar and scan
+    jobs:
+    - job: BuildFeature
+      displayName: Maven-Build
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          mavenOptions: '-Xmx3072m'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.8'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          goals: 'package'
+      - task: Bash@3
+        name: echo_strings
+        inputs:
+          targetType: 'inline'
+          script: |
+            echo "Pipeline name: $(PIPELINE_NAME)"
