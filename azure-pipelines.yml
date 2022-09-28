@@ -43,4 +43,6 @@ stages:
           script: |
             echo "Pipeline name: $(PIPELINE_NAME)"
             ls -al
+            docker build -f Dockerfile -t gitops-demo-inventory .
+            docker images
 
